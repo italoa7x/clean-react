@@ -1,15 +1,24 @@
-import { HttpClientSpy } from "../../test/mock-http-client";
+import { HttpPostClientSpy } from "../../test/mock-http-client";
 import { RemoteAuthentication } from "./remote-authentication";
 
+
+const makeUst = (url: string = '') => {
+
+    const httpPostClientSpy = new HttpPostClientSpy();
+    const sut = new RemoteAuthentication(url, httpPostClientSpy);
+
+    return {
+        sut,
+        httpPostClientSpy
+    }
+}
 
 describe('RemoteAuthentication', () => {
 
     test('Should call HttpClient with correct url', async () => {
 
         const url = 'localhost'
-        const httpPostClientSpy = new HttpClientSpy();
-        const sut = new RemoteAuthentication(url, httpPostClientSpy);
-
+        const { sut, httpPostClientSpy } = makeUst(url);
 
         await sut.auth();
 
